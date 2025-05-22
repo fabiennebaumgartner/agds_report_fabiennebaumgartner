@@ -1,0 +1,221 @@
+---
+title: "re_linear_regression"
+author: "FB"
+date: "2025-04-08"
+output: html_document
+---
+
+```{r setup}
+library(ggplot2)
+library(dplyr)
+library(ggcorrplot)
+```
+# Chapter 9 - Linear Regression
+
+## 1. Load data and prepare for analysis
+```{r}
+
+half_hourly_fluxes <- readr::read_csv("C:/Users/fabau/OneDrive/Dokumente/Uni_Bern/Semester_4/Agds/half_hourly_fluxes.csv")
+
+#little summary of the missing values
+colSums(is.na(half_hourly_fluxes))
+
+#drop rows with nan in response variables
+response_variable <- half_hourly_fluxes[!is.na(half_hourly_fluxes$GPP_NT_VUT_REF), ]
+
+#create vector
+subset <- c("GPP_NT_VUT_REF", "TA_F", "SW_IN_F", "LW_IN_F", "VPD_F", "PA_F", "P_F", 
+  "WS_F", "CO2_F_MDS", "PPFD_IN", "USTAR")
+
+cleaned_data <- response_variable[, subset]
+
+cleaned_data <- cleaned_data[complete.cases(cleaned_data),]
+
+```
+The dataset was analysed to get a feeling on how many NaNs there are. Based on the output, I chose to exclude all rows where there are missing values. Furthermore, the variables LW_IN_F_MDS and PPFD_IN will be excluded for further analysis due to too many missing values. Moreover, TA_F_MDS, SW_IN_F_MDS, VPD_F_MDS are excluded because these are the gap-filled version of TA_F and this would not give us more information on the linear relationship.
+Therefor the chosen variables to proceed with  are: TA_F, SW_IN_F, LW_IN_F, VPD_F, PA_F, P_F, 
+WS_F, CO2_F_MDS, PPFD_IN, USTAR. 
+
+
+## 2. Analysis
+
+### 2.1 intercept-only
+
+#### 2.1.1 Calculation
+```{r }
+
+model_1 <- lm(formula = GPP_NT_VUT_REF ~ 1, data = cleaned_data)
+
+aic <- AIC(model_1)
+
+
+```
+#### 2.1.2 Visualization
+```{r intercept-only, fig.cap="Figure 1: Intercept-only Linear Regression"}
+
+ggplot(cleaned_data, aes(x = 1:nrow(cleaned_data), y = GPP_NT_VUT_REF)) +
+  geom_point(alpha = 0.4) +
+  geom_hline(yintercept = coef(model_1)[1], color = "red", linetype = "dashed") +
+  labs(title = "Intercept-Only Model",
+       x = "Observation Index",
+       y = "GPP_NT_VUT_REF") +
+  theme_minimal()
+
+
+
+```
+This model shows us the GPP_NT_VUT_REF across the observation indices, which corresponds to time-ordered measurements. The red dashed line gives us the mean of all GPP_NT_VUT_REF values. 
+
+### 2.2 Setting up the model and add one Predictor; Step 1-3
+
+#### 2.2.1 setting up the model; step 1-3
+```{r single linear regression, results='markup'}
+
+predictors <- c("TA_F", "SW_IN_F", "LW_IN_F", "VPD_F", "PA_F", "P_F", 
+  "WS_F", "CO2_F_MDS", "PPFD_IN", "USTAR")
+
+best_aic <- aic
+best_predictor <- NULL
+aic_results <- data.frame(predictor = character (), aic = numeric())
+
+for (pred in predictors) {
+  formula <- as.formula(paste("GPP_NT_VUT_REF ~", pred))
+  model_2 <- lm(formula, data = cleaned_data)
+  
+  #print aic
+  aic_2 <- AIC(model_2)
+  cat("Predictor:", pred, "| AIC:", aic_2, "\n")
+  
+  aic_results <- rbind(aic_results, data.frame(predictor = pred, aic = aic_2))
+  
+  #if aic is better then before
+  if (aic_2 < best_aic) {
+    best_aic <- aic_2
+    best_predictor <- pred
+  }
+}
+
+cat("\n Best predictor in step 1 is:", best_predictor, "| AIC:", best_aic, "\n")
+
+
+```
+
+#### 2.2.2 Visualization
+
+```{r AIC - single linear regression, fig.cap="Figure 2: AIC Values for Predictors"}
+
+ggplot(aic_results, aes(x = reorder(predictor, aic), y = aic)) +
+  geom_col(fill = "skyblue") +
+  coord_flip() +
+  labs(title = "AIC Values for Single-Predictor Models",
+       x = "Predictor",
+       y = "AIC") +
+  theme_minimal()
+
+
+```
+In the initial step of the model selection, PPFD_IN was chosen as the first predictor. This variable also shows  the strongest correlation with GPP_NT_VUT_REF as seen in 2.3.4. 
+PPFD_IN represents the Photosynthetic photon flux density (incoming). This is a measure of how much light is available for photosynthesis. Given that photosynthesis is fundamentally driven by light, the strong predictive power of PPFD_IN in explaining GPP best out of all the variables is ecologically justified. 
+
+
+### 2.3 Full implementation stepwise forward regression
+
+#### 2.3.1 Code
+```{r stepwise forward regression - full implementation, results='markup'}
+predictors_2 <- c("TA_F", "SW_IN_F", "LW_IN_F", "VPD_F", "PA_F", "P_F", 
+                  "WS_F", "CO2_F_MDS", "USTAR")
+selected_predictors <- c("PPFD_IN")
+
+aic_progress <- data.frame(step = integer(), predictor = character(), aic = numeric())
+
+
+improvement <- TRUE
+
+while (improvement) {
+  best_aic_2 <- best_aic
+  best_predictor <- NULL
+  
+  for (pre in predictors_2) {
+    formula <- as.formula(paste("GPP_NT_VUT_REF ~", 
+                                paste(c(selected_predictors, pre), collapse = " + ")))
+    
+    model_3 <- lm(formula, data = cleaned_data)
+    aic_3 <- AIC(model_3)
+    cat("Predictor:", pre, "| AIC:", aic_3, "\n")
+    
+    if (aic_3 < best_aic_2) {
+      best_aic_2 <- aic_3
+      best_predictor <- pre
+      best_model <- model_3
+    }
+  }
+  
+  if (!is.null(best_predictor)) {
+    selected_predictors <- c(selected_predictors, best_predictor)
+    predictors_2 <- setdiff(predictors_2, best_predictor)
+    best_aic <- best_aic_2
+    current_model <- best_model
+    cat("added:", best_predictor, "| new best AIC:", best_aic, "\n\n")
+    aic_progress <- rbind(aic_progress, data.frame(
+    step = length(selected_predictors),
+    predictor = best_predictor,
+    aic = best_aic
+))
+
+  } else {
+    improvement <- FALSE
+    cat("No more improvement. Final model.\n")
+  }
+}
+
+```
+#### 2.3.2 Visualization
+
+```{r AIC - stepwise forward regression, fig.cap="Figure 3: AIC Reduction"}
+
+ggplot(aic_progress, aes(x = step, y = aic, label = predictor)) +
+  geom_line(color = "steelblue") +
+  geom_point(size = 2) +
+  geom_text(vjust = -0.5, size = 3) +
+  labs(title = "AIC Reduction During Stepwise Selection",
+       x = "Step (Number of Predictors in Model)",
+       y = "AIC") +
+  theme_minimal()
+
+
+```
+As seen in Figure 3, the largest reduction of the AIC is in the 1-4th steps. Later variables improved the AIC only sightly. 
+
+Redundancy between predictor variables can influence the order in which they are selected or lead to an exclusion of some variables. . For instance, although SW_INF is strongly correlated with the response variables (see 2.3.4), it was added later on in the process (step 5). This may be due to the extremely high correlation with PPFD_IN, which was selected in the first step. Likely, PPFD_IN already captures a significant amount of the variance which SW_IN_F could explain. 
+
+#### 2.3.3 Summary Statistics
+
+```{r summary statistics stepwirse forward regression, results='markup'}
+
+summary(current_model)
+
+print(selected_predictors)
+
+```
+
+The model explains ~59.5% of the variance in GPP_NT_VUT_REF. 
+
+#### 2.3.4 Correlation between Predictors
+
+```{r Correlation, fig.cap="Figure 4: Correlation Matrix"}
+
+corr_matrix <- cor(cleaned_data, use = "complete.obs")
+
+# Plot the correlation matrix
+ggcorrplot(corr_matrix,
+           method = "square",       
+           type = "lower",             
+           lab = TRUE,                  
+           lab_size = 3,
+           colors = c("darkred", "white", "steelblue"),  
+           title = "Correlation Matrix of Flux Predictors",
+           ggtheme = theme_minimal())
+
+```
+
+

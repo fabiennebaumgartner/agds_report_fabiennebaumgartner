@@ -1,0 +1,179 @@
+---
+title: "re_airquality"
+author: "FB"
+date: "2025-03-10"
+output: html_document
+---
+
+```{r setup}
+#load libraries and dataset
+library(dplyr)
+library(lubridate)
+library(tidyr)
+library(readr)
+library(stringr)
+library(purrr)
+library(ggplot2)
+library(scico)
+library(knitr)
+
+#datasets::airquality
+```
+# Air Quality Analysis in New York (Summer 1973)
+
+## 1. Introduction
+The dataset 'airquality' was obtained from the New York State Department of Conservation and the National Weather Service. The dataset covers the summer monthis of 1973 (1.5.1973 - 30.9.1973). It contains:
+- **Ozone** (parts per billion)
+- **Solar Radiation** (Angstrom frequency band of 4000-7000)
+- **Wind Speed** (miles per hour)
+- **Temperature** (°F, max daily temp)
+
+
+Ozone is an indicator of air pollution and significantly impacts human health and the environment. Understanding how weather conditions influence ozone levels is essential to improve pollution forecasts. 
+
+This report explores:
+Can you predict Ozone levels based on the Temperature alone?
+
+
+
+
+## 2. Ozone and Temperature Distributions
+
+### 2.1 Ozone and Temperature Statistics
+
+```{r ozone and temperature statistics, results='markup'}
+#Ozone summary
+ozone_median <- median(airquality$Ozone, na.rm = TRUE)
+print(ozone_median)
+
+ozone_quantile <- quantile(airquality$Ozone, na.rm = TRUE)
+print(ozone_quantile)
+
+#Temperature summary
+temp_median <- median(airquality$Temp, na.rm = TRUE)
+print(temp_median)
+
+temp_quantile <- quantile(airquality$Temp, na.rm = TRUE)
+print(temp_quantile)
+
+
+```
+
+### 2.2 Ozone Levels - Boxplot
+```{r ozone-boxplot, fig.cap="Figure 1: Distribution of Ozone Levels at Roosevelt Island"}
+plot_1 <- boxplot(airquality$Ozone,
+                  main = "Ozone Levels in Parts Per Billion",
+                  xlab = "Ozone (ppb)",
+                  col = "orange",
+                  border = "brown",
+                  horizontal = TRUE,
+                  notch = TRUE)
+
+```
+
+### 2.3 Temperature Levels - Boxplot
+
+```{r temp-boxplot, fig.cap="Figure 2: Distribution of Maximum Daily Temperatures"}
+
+plot_2 <- boxplot(airquality$Temp,
+                  main = "Temperature in Degrees Fahrenheit",
+                  xlab = "Temperature (°F)",
+                  col = "orange",
+                  border = "brown",
+                  horizontal = TRUE,
+                  notch = TRUE)
+
+```
+
+The IQR above the median is noticeably wider, this indicates a right-skewed distribution with greater variability in higher ozone concentrations.
+
+2.1 suggests the following classification for 3.:
+- **Low temperature:** Below 72°F
+- **Medium temperature:** 72°F - 85°F
+- **High temperature:** Above 85°F
+
+This classification is based on quantiles derived from the data.
+
+
+## 3. Ozone Levels by Temperature Group
+
+### 3.1 ANOVA summary
+
+```{r ozone-tempgroup-ANOVA, results='markup'}
+
+# prepping values & ANOVA
+airquality_clean <- airquality %>% 
+  filter(!is.na(Ozone) & !is.na(TempGroup))
+
+anova_model <- aov(Ozone ~ TempGroup, data = airquality_clean)
+summary(anova_model)
+
+
+```
+
+### 3.2 Violin Plot - Ozone Levels by Temperature Category
+
+```{r ozone-tempgroup-boxplot, fig.cap="Figure 3: Ozone Levels by Temperature Category"}
+#defining quartiles and create groups
+q <- quantile(airquality$Temp, probs = c(0.25, 0.75), na.rm = TRUE)
+
+airquality$TempGroup <- cut(airquality$Temp,
+                            breaks = c(0, q[1], q[2], Inf),
+                            labels = c("Low", "Medium", "High"))
+
+
+
+plot_3<-ggplot(airquality_clean, aes(x = TempGroup, y = Ozone, fill = TempGroup)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +
+  geom_boxplot(width = 0.2, fill = "white") +  
+  theme_classic() +
+  labs(title = "Ozone Levels by Temperature Group", 
+       x = "Temperature Group", 
+       y = "Ozone (ppb)") +
+  scale_fill_manual(values = c("Low" = "blue", "Medium" = "orange", "High" = "red"))
+
+print(plot_3)
+
+```
+
+Figure 3 clearly shows an increase in Ozone from the low to high temperature groups. The medium group indicates the highest spread with several extreme outliers. while the low group shows the most concentrated observations.
+
+THe performed ANOVA confirmed that these differences are statistically significant (F(2,113) = 43.51, p < 0.001), indicating that temperature group has a strong effect on ozone levels.
+
+
+## 4. Ozone and Temperature Relationship
+
+### 4.1 Linear Regression Summary
+
+```{r ozone-temp-regression, fig.cap="Figure 4: Ozone vs. Temperature"}
+#Linear Regression Summary
+model <- lm(Ozone ~ Temp, data=airquality)
+summary(model)
+
+
+```
+
+### 4.3 Linear Regression Visualization
+
+```{r ozone-temp-regression, fig.cap="Figure 4: Ozone vs. Temperature"}
+
+plot_4 <- ggplot(airquality_clean, aes(x = Temp, y = Ozone)) +
+  geom_point() +
+  geom_smooth(method = 'lm', color = "black") +
+  theme_classic() +
+  labs(title = "Ozone vs. Temperature", 
+       x = "Temperature (°F)", 
+       y = "Ozone (ppb)") 
+
+print(plot_4)
+
+```
+
+The performed linear regression reveals a statisticaly significant positive relationship between temperature and Ozone levels (p > 0.001). Temperature is a strong predictor of Ozone concentration (around 49%). These observations are clearly visible in Figure 4.
+
+## 5. Discussion
+In Summary, the analysis performed in 2., 3. and 4. reveals that temperature is a strong and significant driver of ozone levels. Both ANOVA and the regression analysis support this conclusion. 
+However, the violin plot and the regression indicate an unexplained variability, especially in the medium and high temperature groups. This suggests that other factors likely also influence Ozone concentrations. 
+For further analysis and a better understanding of Ozone levels, a multiple linear regression could be performed. 
+
+
