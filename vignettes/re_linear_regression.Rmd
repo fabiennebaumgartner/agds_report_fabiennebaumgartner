@@ -5,18 +5,19 @@ date: "2025-04-08"
 output: html_document
 ---
 
-```{r setup}
+```{r setup-libraries, message=FALSE, warning=FALSE}
+
 library(ggplot2)
 library(dplyr)
 library(ggcorrplot)
+library(here)
 ```
 # Chapter 9 - Linear Regression
 
 ## 1. Load data and prepare for analysis
 ```{r}
 
-half_hourly_fluxes <- readr::read_csv("C:/Users/fabau/OneDrive/Dokumente/Uni_Bern/Semester_4/Agds/half_hourly_fluxes.csv")
-
+half_hourly_fluxes <- readr::read_csv(here("data","half_hourly_fluxes.csv"))
 #little summary of the missing values
 colSums(is.na(half_hourly_fluxes))
 

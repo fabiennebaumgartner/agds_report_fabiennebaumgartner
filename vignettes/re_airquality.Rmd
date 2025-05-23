@@ -5,7 +5,8 @@ date: "2025-03-10"
 output: html_document
 ---
 
-```{r setup}
+```{r setup-libraries, message=FALSE, warning=FALSE}
+
 #load libraries and dataset
 library(dplyr)
 library(lubridate)
@@ -101,6 +102,13 @@ This classification is based on quantiles derived from the data.
 
 ```{r ozone-tempgroup-ANOVA, results='markup'}
 
+#defining quartiles and create groups
+q <- quantile(airquality$Temp, probs = c(0.25, 0.75), na.rm = TRUE)
+
+airquality$TempGroup <- cut(airquality$Temp,
+                            breaks = c(0, q[1], q[2], Inf),
+                            labels = c("Low", "Medium", "High"))
+
 # prepping values & ANOVA
 airquality_clean <- airquality %>% 
   filter(!is.na(Ozone) & !is.na(TempGroup))
@@ -114,13 +122,6 @@ summary(anova_model)
 ### 3.2 Violin Plot - Ozone Levels by Temperature Category
 
 ```{r ozone-tempgroup-boxplot, fig.cap="Figure 3: Ozone Levels by Temperature Category"}
-#defining quartiles and create groups
-q <- quantile(airquality$Temp, probs = c(0.25, 0.75), na.rm = TRUE)
-
-airquality$TempGroup <- cut(airquality$Temp,
-                            breaks = c(0, q[1], q[2], Inf),
-                            labels = c("Low", "Medium", "High"))
-
 
 
 plot_3<-ggplot(airquality_clean, aes(x = TempGroup, y = Ozone, fill = TempGroup)) +
@@ -145,7 +146,7 @@ THe performed ANOVA confirmed that these differences are statistically significa
 
 ### 4.1 Linear Regression Summary
 
-```{r ozone-temp-regression, fig.cap="Figure 4: Ozone vs. Temperature"}
+```{r ozone-temp-regression summary"}
 #Linear Regression Summary
 model <- lm(Ozone ~ Temp, data=airquality)
 summary(model)

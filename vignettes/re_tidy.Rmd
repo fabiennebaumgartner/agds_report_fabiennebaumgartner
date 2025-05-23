@@ -5,25 +5,25 @@ date: "2025-03-06"
 output: html_document
 ---
 
-```{r}
+```{r setup-libraries, message=FALSE, warning=FALSE}
+
 library(dplyr)
 library(lubridate)
 library(tidyr)
 library(readr)
 library(stringr)
 library(purrr)
+library(here)
 
-soil_organic_carbon_ds <- readr::read_csv2("C:/Users/fabau/OneDrive/Dokumente/Uni_Bern/Semester_4/Agds/report_exercise_4.csv")
+soil_organic_carbon_ds <- readr::read_csv2(here("data","report_exercise_4.csv"))
 
 ```
 # Soil organic matter during elevated CO2 experiments
-# 1. Introduction
-Soil organic matter during elevated CO2 experiments......
 
-# 2. Code
-## 2.1 Categorisation into early, mid and late phases of the experiment
+# 1. Code
+## 1.1 Categorisation into early, mid and late phases of the experiment
 
-```{r}
+```{r - categorisation}
 soil_organic_carbon_ds <- soil_organic_carbon_ds %>%
   mutate(phase = case_when(
     Time_years < 3  ~ "Early",
@@ -34,9 +34,9 @@ soil_organic_carbon_ds <- soil_organic_carbon_ds %>%
 
 ```
 
-## 2.2 log-response ratio for early, mid and late phase of experiments
+## 1.2 log-response ratio for early, mid and late phase of experiments
 
-```{r}
+```{r - log response}
 my_function <- function(xelevated, xambient){
   b <- log(xelevated/xambient)
   return(b)
@@ -52,19 +52,19 @@ knitr::kable(soil_organic_carbon_ds)
 
 ```
 
-# 3. Questions:
+# 2. Questions:
 
-## 3.1 What are the data that you are looking at?
+## 2.1 What are the data that you are looking at?
 
 The dataset we are looking at contains soil organic carbon measurements from multiple experiments across the globe. Ultimately, the focus is on how elevated atmospheric CO2 affects soil carbon over time. Therefor, the ambient CO2 reflects the natural CO2 level while the elevated CO2 shows the increased Co2 to simulate long-term responses. 
 
 
 
-## 3.2 What do you expect your analysis to show, what is your hypothesis? How should soil organic matter content change under elevated CO?
+## 2.2 What do you expect your analysis to show, what is your hypothesis? How should soil organic matter content change under elevated CO?
 
 Based on the hypotheses of van Groeningen et al. 2014 I expect that soil organic matter content increases under elevated Co. A higher CO2 concentration hypothetically boosts photosynthesis, which in turn leads to greater plant growth and more organic matter in the soil. However, I expect different levels of increased organic matter in the soil across the different phases. I anticipate the least effect during the early phase and the biggest effect by the late phase. 
 
-## 3.3 What do the final numbers mean? Do they support the initial hypothesis? Why so, why not?
+## 2.3 What do the final numbers mean? Do they support the initial hypothesis? Why so, why not?
 The early and mid phase of the experiments show a positive log value (e.g 0.0125 and 0.0172 resp.). The late phase shows a negative log value (-0.0306). A positive log value indicates an increase in soil organic matter, whereas a negative value shows a decrease. 
 
 These results partially support the initial hypothesis. The early and mid phase align with the expectation of an elevated Co2 increase while the late phase contradicts this by showing a decline.
@@ -76,6 +76,6 @@ In summary, the decline observed in the late phase could be explained by the cum
 
 
 
-# 4. Literature:
+# 3. Literature:
 van Groeningen, K., Qi X., Osenberg C. W., Luo Y. & Hungate B. A. (2014). Faster Decomposition Under Increased Atmospheric Co2 Limits Soil Carbon Storage. Science, 344(6183): 508-509.
 
