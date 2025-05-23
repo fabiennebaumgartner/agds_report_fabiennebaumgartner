@@ -1,0 +1,288 @@
+Experiment;Citation;Depth;Sample_date;Time_years;ambient_CO2;increased_CO2
+;;;;;;
+ArizonaFACE - wheat - high N;Leavitt et al. 2001;0-15 cm;nov. 1995;0;1344;1228
+;Leavitt et al. 2001;0-15 cm;May-96;0,5;1363;1305
+;Leavitt et al. 2001;0-15 cm;dec. 1996;1;1254;1264
+;Leavitt et al. 2001;0-15 cm;May-97;1,5;1258;1400
+;;;;;;
+Biosphere 2;Trueman and  Gonzalez-Meler 2005;0-25 cm;average 1999;0;5950;6362
+;Trueman and  Gonzalez-Meler 2005;0-25 cm;average 2000;1;5254;4735
+;Trueman and  Gonzalez-Meler 2005;0-25 cm;average 2001;2;6084;4785
+;Trueman and  Gonzalez-Meler 2005;0-25 cm;average 2002;3;5470;4064
+;Trueman and  Gonzalez-Meler 2005;0-25 cm;average 2003;4;5335;4220
+;;;;;;
+China FACE - low N;Zhong et al. 2009;0-15 cm;mar. 2008;3,66;1937;2192
+;Zhong et al. 2009;0-15 cm;jun. 2008;4;1937;2123
+;;;;;;
+China FACE - high N;Zhong et al. 2009;0-15 cm;mar. 2008;3,66;1926;2135
+;Zhong et al. 2009;0-15 cm;jun. 2008;4;1937;2105
+;;;;;;
+China OTC - low N;Liu et al. 2010;0-20 cm;jul. 2005;0,33;1103;1168
+;Liu et al. 2010;0-20 cm;nov. 2005;0,67;1036;1097
+;Liu et al. 2010;0-20 cm;apr. 2006;1;1936;2385
+;Liu et al. 2010;0-20 cm;aug. 2006;1,33;2319;2218
+;Liu et al. 2010;0-20 cm;nov. 2006;1,66;2060;2051
+;Liu et al. 2010;0-20 cm;apr. 2007;2;2431;2301
+;Liu et al. 2010;0-20 cm;aug. 2007;2,33;2263;2361
+;Liu et al. 2010;0-20 cm;nov. 2007;2,66;2116;2158
+;Liu et al. 2010;0-20 cm;apr. 2008;3;3625;3315
+;Liu et al. 2010;0-20 cm;aug. 2008;3,33;3253;3279
+;Liu et al. 2010;0-20 cm;nov. 2008;3,66;3287;3410
+;;;;;;
+China OTC - high N;Liu et al. 2010;0-20 cm;jul. 2005;0,33;1201;1198
+;Liu et al. 2010;0-20 cm;nov. 2005;0,67;922;1409
+;Liu et al. 2010;0-20 cm;apr. 2006;1;1930;2373
+;Liu et al. 2010;0-20 cm;aug. 2006;1,33;1951;2514
+;Liu et al. 2010;0-20 cm;nov. 2006;1,66;1587;3054
+;Liu et al. 2010;0-20 cm;apr. 2007;2;2015;3030
+;Liu et al. 2010;0-20 cm;aug. 2007;2,33;2273;2725
+;Liu et al. 2010;0-20 cm;nov. 2007;2,66;2187;2702
+;Liu et al. 2010;0-20 cm;apr. 2008;3;3602;3947
+;Liu et al. 2010;0-20 cm;aug. 2008;3,33;3581;4170
+;Liu et al. 2010;0-20 cm;nov. 2008;3,66;3645;4158
+;;;;;;
+FACTS I;Lichter et al. 2008;0-15 cm;aug. 1996;0;1977;2142
+;Lichter et al. 2008;0-15 cm;oct. 1999;3,17;1902;2208
+;Lichter et al. 2008;0-15 cm;aug. 2002;6;2407;2734
+;Lichter et al. 2008;0-15 cm;aug. 2006;9;2164;2096
+;;;;;;
+FACTS II - Aspen;Talhelm et al. 2009;0-10 cm;2001;4;3575;3562
+;Talhelm et al. 2009;0-10 cm;2003;6;3625;4435
+;Talhelm et al. 2009;0-10 cm;2004;7;3235;3243
+;Talhelm et al. 2009;0-10 cm;2005;8;3741;3506
+;Talhelm et al. 2009;0-10 cm;2006;9;4243;3841
+;Talhelm et al. 2009;0-10 cm;2007;10;4374;3760
+;Talhelm et al. 2009;0-10 cm;2008;11;5119;3267
+;;;;;;
+FACTS II - Aspen (+O3);Talhelm et al. 2009;0-10 cm;2001;4;3193;3199
+;Talhelm et al. 2009;0-10 cm;2003;6;3081;3433
+;Talhelm et al. 2009;0-10 cm;2004;7;3418;2804
+;Talhelm et al. 2009;0-10 cm;2005;8;3886;2890
+;Talhelm et al. 2009;0-10 cm;2006;9;4073;3444
+;Talhelm et al. 2009;0-10 cm;2007;10;4382;3268
+;Talhelm et al. 2009;0-10 cm;2008;11;4783;3141
+;;;;;;
+FACTS II - Aspen/Birch;Talhelm et al. 2009;0-10 cm;2001;4;3256;3817
+;Talhelm et al. 2009;0-10 cm;2003;6;3347;3274
+;Talhelm et al. 2009;0-10 cm;2004;7;3408;3457
+;Talhelm et al. 2009;0-10 cm;2005;8;3653;3436
+;Talhelm et al. 2009;0-10 cm;2006;9;4433;4196
+;Talhelm et al. 2009;0-10 cm;2007;10;4125;3832
+;Talhelm et al. 2009;0-10 cm;2008;11;3484;3946
+;;;;;;
+FACTS II - Aspen/Birch (+O3);Talhelm et al. 2009;0-10 cm;2001;4;3305;3121
+;Talhelm et al. 2009;0-10 cm;2003;6;4105;3798
+;Talhelm et al. 2009;0-10 cm;2004;7;2943;3255
+;Talhelm et al. 2009;0-10 cm;2005;8;3578;3351
+;Talhelm et al. 2009;0-10 cm;2006;9;4083;4064
+;Talhelm et al. 2009;0-10 cm;2007;10;3909;4290
+;Talhelm et al. 2009;0-10 cm;2008;11;4113;3849
+;;;;;;
+FACTS II - Aspen/Mapel;Talhelm et al. 2009;0-10 cm;2001;4;2908;3541
+;Talhelm et al. 2009;0-10 cm;2003;6;3327;3186
+;Talhelm et al. 2009;0-10 cm;2004;7;3135;3270
+;Talhelm et al. 2009;0-10 cm;2005;8;4206;3960
+;Talhelm et al. 2009;0-10 cm;2006;9;4023;3850
+;Talhelm et al. 2009;0-10 cm;2007;10;4014;4450
+;Talhelm et al. 2009;0-10 cm;2008;11;3948;4675
+;;;;;;
+FACTS II - Aspen/Mapel (+O3);Talhelm et al. 2009;0-10 cm;2001;4;3449;3334
+;Talhelm et al. 2009;0-10 cm;2003;6;3512;2961
+;Talhelm et al. 2009;0-10 cm;2004;7;3321;3240
+;Talhelm et al. 2009;0-10 cm;2005;8;3564;3376
+;Talhelm et al. 2009;0-10 cm;2006;9;4115;3739
+;Talhelm et al. 2009;0-10 cm;2007;10;3982;3737
+;Talhelm et al. 2009;0-10 cm;2008;11;4093;3723
+;;;;;;
+GiFACE;Lenhart 2008;0-7.5 cm;May-98;0;3420;3528
+;Lenhart 2008;0-7.5 cm;Jun-07;9,08;3150;3096
+;;;;;;
+Hohenheim;Marhan et al. 2010;0-10 cm;mar. 2004;2;1725;1767
+;Marhan et al. 2010;0-10 cm;oct. 2004;2,5;1707;1641
+;Marhan et al. 2010;0-10 cm;mar. 2005;3;1805;1744
+;Marhan et al. 2010;0-10 cm;oct. 2005;3,5;1567;1588
+;Marhan et al. 2010;0-10 cm;mar. 2006;4;1680;1717
+;Marhan et al. 2010;0-10 cm;oct. 2006;4,5;1721;1763
+;;;;;;
+Jasper Ridge - sandstone;Hungate et al. 1997;0-15 cm;jan. 1992;0;2646;2646
+;Hungate et al. 1997;0-15 cm;May-93;1,41;2646;2354
+;Hungate et al. 1997;0-15 cm;May-94;2,41;2252;2339
+;Hungate et al. 1997;0-15 cm;May-95;3,41;2315;2315
+;Hungate et al. 1997;0-15 cm;May-96;4,41;2497;2486
+;Hungate et al. 1997;0-15 cm;May-97;5,41;2612;2750
+;;;;;;
+JRGCE - Control;Hungate et al. unpublished;0-15 cm;2000;2;2384;2344
+;Hungate et al. unpublished;0-15 cm;2006;8;2428;2173
+;;;;;;
+JRGCE - Burn;Hungate et al. unpublished;0-15 cm;2000;2;2296;2497
+;Hungate et al. unpublished;0-15 cm;2006;8;2544;2269
+;;;;;;
+JRGCE - N;Hungate et al. unpublished;0-15 cm;2000;2;2248;2381
+;Hungate et al. unpublished;0-15 cm;2006;8;2552;2329
+;;;;;;
+JRGCE - N x Burn;Hungate et al. unpublished;0-15 cm;2000;2;2359;2425
+;Hungate et al. unpublished;0-15 cm;2006;8;2529;2226
+;;;;;;
+JRGCE - Water;Hungate et al. unpublished;0-15 cm;2000;2;2292;2268
+;Hungate et al. unpublished;0-15 cm;2006;8;2311;2085
+;;;;;;
+JRGCE - Water x Burn;Hungate et al. unpublished;0-15 cm;2000;2;2394;2563
+;Hungate et al. unpublished;0-15 cm;2006;8;2396;2301
+;;;;;;
+JRGCE - Water x N;Hungate et al. unpublished;0-15 cm;2000;2;2193;2264
+;Hungate et al. unpublished;0-15 cm;2006;8;2626;2442
+;;;;;;
+JRGCE - Water x N x Burn;Hungate et al. unpublished;0-15 cm;2000;2;2251;2569
+;Hungate et al. unpublished;0-15 cm;2006;8;2232;2385
+;;;;;;
+JRGCE - Heat;Hungate et al. unpublished;0-15 cm;2000;2;2298;2295
+;Hungate et al. unpublished;0-15 cm;2006;8;2385;2438
+;;;;;;
+JRGCE - Heat x N;Hungate et al. unpublished;0-15 cm;2000;2;2288;2454
+;Hungate et al. unpublished;0-15 cm;2006;8;2283;2449
+;;;;;;
+JRGCE - Heat x Water;Hungate et al. unpublished;0-15 cm;2000;2;2327;2310
+;Hungate et al. unpublished;0-15 cm;2006;8;2074;2414
+;;;;;;
+JRGCE - Heat x Water x N;Hungate et al. unpublished;0-15 cm;2000;2;2393;2453
+;Hungate et al. unpublished;0-15 cm;2006;8;2110;2407
+;;;;;;
+Merritt Island;Hungate unpublished;0-10 cm;dec. 1996;0,62;1209;1335
+;Hungate unpublished;0-10 cm;jun. 1998;2,09;1131;1220
+;Hungate unpublished;0-10 cm;jul. 1998;2,17;1264;1292
+;Hungate unpublished;0-10 cm;aug. 1998;2,31;1356;1281
+;Carney et al. 2007;0-10 cm;nov. 1998;2,55;1734;1567
+;Carney et al. 2007;0-10 cm;sept. 1999;3,36;1782;1712
+;Carney et al. 2007;0-10 cm;mar. 2001;4,87;2191;1941
+;Carney et al. 2007;0-10 cm;May-02;6;2099;1741
+;Langley et al. 2009;0-10 cm;May-02;6;1999;1628
+;McKinley et al. unpublished;0-10 cm;May-07;11;1512;1411
+;;;;;;
+NewZealandFACE;Ross et al. 2004;0-5 cm;may/oct. 1997;0;2685;2465
+;Ross et al. 2004;0-5 cm;may/oct. 1998;1;2650;2490
+;Ross et al. 2004;0-5 cm;may/oct. 1999;2;2655;2525
+;Ross et al. 2004;0-5 cm;may/oct. 2000;3;2675;2565
+;Ross et al. 2004;0-5 cm;may/oct. 2001;4;2515;2445
+;Ross et al. 2004;0-5 cm;may/oct. 2002;5;2585;2490
+;Ross et al. 2013;0-5 cm;may/oct. 2003;6;2519;2510
+;Ross et al. 2013;0-5 cm;may/oct. 2004;7;2599;2534
+;Ross et al. 2013;0-5 cm;may/oct. 2005;8;2659;2659
+;Ross et al. 2013;0-5 cm;may/oct. 2006;9;2657;2722
+;Ross et al. 2013;0-5 cm;may/oct. 2007;10;2722;2822
+;;;;;;
+New Zealand Greenhouse;Ross et al. 1995;0-5 cm;-;0;2112,2;2122,4
+;Ross et al. 1995;0-5 cm;-;0,25;2122,4;2142,9
+;Ross et al. 1995;0-5 cm;-;0,5;1969,4;1979,6
+;Ross et al. 1995;0-5 cm;-;0,75;1969,4;2000
+;;;;;;
+New Zealand OTC - P. radiata;Ross et al. 2006;0-10 cm;apr.1994;0;100;100
+;Ross et al. 2006;0-10 cm;mar. 2000;6;412;530
+;;;;;;
+New Zealand OTC - N. fusca;Ross et al. 2006;0-10 cm;apr.1994;0;100;100
+;Ross et al. 2006;0-10 cm;mar. 2000;6;2403;3402
+;;;;;;
+ORNL FACE;Jastrow et al. 2005;0-15 cm;oct. 1997;0;2672;2791
+;Jastrow et al. 2005;0-15 cm;nov. 2000;2,42;2785;2866
+;Jastrow et al. 2005;0-15 cm;oct. 2002;4,33;2730;2991
+;Iversen et al. 2012;0-15 cm;Jun-09;11;3370;3850
+;;;;;;
+Placerville - low N;Johnson et al. 2006;0-30 cm;mar. 1991;0;8400;8000
+;Johnson et al. 2006;0-30 cm;mar. 1993;1,75;7600;7600
+;Johnson et al. 2006;0-30 cm;sept. 1996;5,5;7400;7600
+;;;;;;
+Placerville - medium N;Johnson et al. 2006;0-30 cm;mar. 1991;0;7800;7900
+;Johnson et al. 2006;0-30 cm;mar. 1993;1,75;7700;7800
+;Johnson et al. 2006;0-30 cm;sept. 1996;5,5;7400;8300
+;;;;;;
+Placerville - high N;Johnson et al. 2006;0-30 cm;mar. 1991;0;8100;7500
+;Johnson et al. 2006;0-30 cm;mar. 1993;1,75;7500;8500
+;Johnson et al. 2006;0-30 cm;sept. 1996;5,5;7400;8100
+;;;;;;
+POPFACE - alba;Hoosbeek et al. 2009;0-10 cm;oct. 1999;0;1320;1128
+;Hoosbeek et al. 2009;0-10 cm;oct. 2000;1;1365;1195
+;Hoosbeek et al. 2009;0-10 cm;oct. 2001;2;1524;1295
+;Hoosbeek et al. 2009;0-10 cm;oct. 2003;4;1629;1377
+;Hoosbeek et al. 2009;0-10 cm;oct. 2004;5;1647;1480
+;;;;;;
+POPFACE - euramericana;Hoosbeek et al. 2009;0-10 cm;oct. 1999;0;1252;1165
+;Hoosbeek et al. 2009;0-10 cm;oct. 2000;1;1429;1213
+;Hoosbeek et al. 2009;0-10 cm;oct. 2001;2;1405;1084
+;Hoosbeek et al. 2009;0-10 cm;oct. 2003;4;1635;1431
+;Hoosbeek et al. 2009;0-10 cm;oct. 2004;5;1686;1370
+;;;;;;
+POPFACE - nigra;Hoosbeek et al. 2009;0-10 cm;oct. 1999;0;1379;1149
+;Hoosbeek et al. 2009;0-10 cm;oct. 2000;1;1458;1169
+;Hoosbeek et al. 2009;0-10 cm;oct. 2001;2;1534;1112
+;Hoosbeek et al. 2009;0-10 cm;oct. 2003;4;1518;1246
+;Hoosbeek et al. 2009;0-10 cm;oct. 2004;5;1509;1344
+;;;;;;
+Shortgrass prairie;Pendall et al. 2004;0-5 cm;nov. 1995;0;617;645
+;Pendall et al. 2004;0-5 cm;end growing season  1997;1;527;542
+;Pendall et al. 2004;0-5 cm;end growing season  1998;2;488;522
+;Pendall et al. 2004;0-5 cm;end growing season  1999;3;618;616
+;Pendall et al. 2004;0-5 cm;end growing season  2000;4;603;593
+;;;;;;
+SoyFACE;Moran and Jastrow 2010;0-12.5 cm;spring 2001;0;4803;4142
+;Moran and Jastrow 2010;0-12.5 cm;spring 2006;5;4671;4100
+;Moran and Jastrow 2010;0-12.5 cm;spring 2007;6;4437;3836
+;;;;;;
+SwissFACE- grass - low N;Van Kessel et al. 2006;0-10 cm;May-95;2;2878;2862
+;Van Kessel et al. 2006;0-10 cm;May-96;3;2796;3584
+;Van Kessel et al. 2006;0-10 cm;May-97;4;2855;2790
+;Van Kessel et al. 2006;0-10 cm;May-98;5;3305;3368
+;Van Kessel et al. 2006;0-10 cm;May-99;6;2970;2946
+;Van Kessel et al. 2006;0-10 cm;May-00;7;2606;2759
+;Van Kessel et al. 2006;0-10 cm;May-01;8;3733;3834
+;Van Kessel et al. 2006;0-10 cm;May-02;9;3350;3498
+;Van Kessel et al. 2006;0-10 cm;May-03;10;3293;3198
+;;;;;;
+SwissFACE- grass - high N;Van Kessel et al. 2006;0-10 cm;May-95;2;3528;3223
+;Van Kessel et al. 2006;0-10 cm;May-96;3;3052;3892
+;Van Kessel et al. 2006;0-10 cm;May-97;4;3075;3091
+;Van Kessel et al. 2006;0-10 cm;May-98;5;3494;3606
+;Van Kessel et al. 2006;0-10 cm;May-99;6;2986;3045
+;Van Kessel et al. 2006;0-10 cm;May-00;7;2920;2588
+;Van Kessel et al. 2006;0-10 cm;May-01;8;3434;3114
+;Van Kessel et al. 2006;0-10 cm;May-02;9;3302;3439
+;Van Kessel et al. 2006;0-10 cm;May-03;10;3258;3332
+;;;;;;
+SwissFACE- clover - low N;Van Kessel et al. 2006;0-10 cm;May-95;2;2822;2872
+;Van Kessel et al. 2006;0-10 cm;May-96;3;3048;3500
+;Van Kessel et al. 2006;0-10 cm;May-97;4;2862;2931
+;Van Kessel et al. 2006;0-10 cm;May-98;5;3034;3291
+;Van Kessel et al. 2006;0-10 cm;May-99;6;2758;2911
+;Van Kessel et al. 2006;0-10 cm;May-00;7;2544;2987
+;Van Kessel et al. 2006;0-10 cm;May-01;8;3443;3145
+;Van Kessel et al. 2006;0-10 cm;May-02;9;3053;3591
+;Van Kessel et al. 2006;0-10 cm;May-03;10;2999;3076
+;;;;;;
+SwissFACE- clover - high N;Van Kessel et al. 2006;0-10 cm;May-95;2;2916;3496
+;Van Kessel et al. 2006;0-10 cm;May-96;3;3256;3688
+;Van Kessel et al. 2006;0-10 cm;May-97;4;2725;2996
+;Van Kessel et al. 2006;0-10 cm;May-98;5;3233;3406
+;Van Kessel et al. 2006;0-10 cm;May-99;6;2759;3153
+;Van Kessel et al. 2006;0-10 cm;May-00;7;2630;2434
+;Van Kessel et al. 2006;0-10 cm;May-01;8;3528;3572
+;Van Kessel et al. 2006;0-10 cm;May-02;9;3209;3456
+;Van Kessel et al. 2006;0-10 cm;May-03;10;2993;3236
+;;;;;;
+Swiss Greenhouse;Körner and Arnone 1992;0-20 cm;-;0;1280;1280
+;Körner and Arnone 1992;0-20 cm;-;0,25;1205;980
+;;;;;;
+Tallgrass Prairie;Rice et al. 1994;0-5 cm;nov. 1992;2,5;2985;2860
+;Williams et al. 2000;0-5 cm;oct. 1996;8;2181;2372
+;;;;;;
+UMBS - aspen;Zak et al. 1993;0-15 cm;May-91;0;297;297
+;Zak et al. 1993;0-15 cm;oct. 1991;0,5;242;290
+;;;;;;
+WSL - loam, low N;Hagedorn et al. 2001;0-10 cm;jan. 1995;0;1290;1290
+;Hagedorn et al. 2001;0-10 cm;sept. 1998;3,75;1317;1471
+;;;;;;
+WSL - loam, high N;Hagedorn et al. 2001;0-10 cm;jan. 1995;0;1290;1290
+;Hagedorn et al. 2001;0-10 cm;sept. 1998;3,75;1482;1547
+;;;;;;
+WSL - sand, low N;Hagedorn et al. 2001;0-10 cm;jan. 1995;0;1310;1310
+;Hagedorn et al. 2001;0-10 cm;sept. 1998;3,75;1167;1214
+;;;;;;
+WSL - sand, high N;Hagedorn et al. 2001;0-10 cm;jan. 1995;0;1310;1310
+;Hagedorn et al. 2001;0-10 cm;sept. 1998;3,75;1120;1183
