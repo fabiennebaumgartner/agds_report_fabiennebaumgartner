@@ -1,0 +1,183 @@
+---
+title: "re_ml_01"
+author: "FB"
+date: "2025-05-19"
+output: html_document
+---
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(caret)
+library(recipes)
+library(rsample)
+library(dplyr)
+library(here)
+
+
+source(here("R", "utils.R"))
+```
+
+# Chapter 10 supervised machine learning I
+
+## 1. Prepare and load data
+### 1. load data
+```{r}
+davos <- read_csv(here("data","FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")) |>
+  
+  # select only the variables we are interested in
+  dplyr::select(TIMESTAMP,
+                GPP_NT_VUT_REF,    # the target
+                ends_with("_QC"),  # quality control info
+                ends_with("_F"),   # includes all all meteorological covariates
+                -contains("JSB")   # weird useless variable
+                ) |>
+
+  # convert to a nice date object
+  dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
+
+  # set all -9999 to NA
+  mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
+  
+  # retain only data based on >=80% good-quality measurements
+  # overwrite bad data with NA (not dropping rows)
+  dplyr::mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF),
+                TA_F           = ifelse(TA_F_QC        < 0.8, NA, TA_F),
+                SW_IN_F        = ifelse(SW_IN_F_QC     < 0.8, NA, SW_IN_F),
+                LW_IN_F        = ifelse(LW_IN_F_QC     < 0.8, NA, LW_IN_F),
+                VPD_F          = ifelse(VPD_F_QC       < 0.8, NA, VPD_F),
+                PA_F           = ifelse(PA_F_QC        < 0.8, NA, PA_F),
+                P_F            = ifelse(P_F_QC         < 0.8, NA, P_F),
+                WS_F           = ifelse(WS_F_QC        < 0.8, NA, WS_F)) |> 
+
+  # drop QC variables (no longer needed)
+  dplyr::select(-ends_with("_QC"))
+  
+  
+```
+
+### 1.2 Data cleaning
+```{r}
+# Data cleaning: looks ok, no obviously bad data
+# no long tail, therefore no further target engineering
+daily_fluxes |> 
+  ggplot(aes(x = GPP_NT_VUT_REF, y = ..count..)) + 
+  geom_histogram()
+
+
+```
+
+
+## 3. split data
+```{r}
+# Data splitting
+set.seed(1982)  # for reproducibility
+split <- rsample::initial_split(daily_fluxes, prop = 0.7, strata = "VPD_F")
+daily_fluxes_train <- rsample::training(split)
+daily_fluxes_test <- rsample::testing(split)
+
+# Model and pre-processing formulation, use all variables but LW_IN_F
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
+                      data = daily_fluxes_train |> drop_na()) |> 
+  recipes::step_BoxCox(recipes::all_predictors()) |> 
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
+
+# Fit linear regression model
+mod_lm <- caret::train(
+  pp, 
+  data = daily_fluxes_train |> drop_na(), 
+  method = "lm",
+  trControl = caret::trainControl(method = "none"),
+  metric = "RMSE"
+)
+
+# Fit KNN model
+mod_knn <- caret::train(
+  pp, 
+  data = daily_fluxes_train |> drop_na(), 
+  method = "knn",
+  trControl = caret::trainControl(method = "none"),
+  tuneGrid = data.frame(k = 8),
+  metric = "RMSE"
+)
+
+
+```
+
+## 4. evaluate models
+### 4.1 KNN
+```{r}
+# KNN
+eval_model(mod = mod_knn, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
+
+
+```
+
+### 4.2 Linear regression
+```{r}
+# linear regression model
+eval_model(mod = mod_lm, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
+
+
+```
+## 5. Questionas & Answers
+5.1 Why is the difference between the evaluation on the training and the test set larger for the KNN model than for the linear regression model?
+
+R^2 measures how much of the variation is explained by the model. 
+The linear regression model (high bias, low variance) achieves similar R^2 on both the training and the test set. However, the model fails to capture more the ~60% of the variance. This has two implications:
+- The model is consistent and not overfiting. 
+- The data may contain non-linear relationship
+
+The KNN model (low bias, high variance) shows a gap between the training and test performance. This has two implications:
+- The KNN model captures noise and overfits.
+- The KNN model outperforms the linear regression, hinting at a non-linear relationship of the data
+
+Ultimately, this outcome may be explained due to the nature of both models. KNN is a low bias, high variance model while linear regression is a high bias, low variance model. The results of both these models are a good example for the bias-variance tradeoff. 
+
+
+5.2 Why does the evaluation on the test set indicate a better model performance of the KNN model than the linear regression model?
+
+Linear Regression assumes a strictly linear relationship, while KNN allows non-linear patterns. The consistent R^2 value of the linear regression represents the proportion of variance which can be explained by a linear relationship. In contrast, the higher R^2 value shows there is additional variance that can be explained through non-linear modelling.
+Consequently, the higher R^2 value in the test data of the KNN model indicates a better model performance because it captures more variance. 
+
+Similarly, the lower RMSE value of the KNN model show a better predictive accuracy then the linear regression model.
+
+
+5.3 How would you position the KNN and the linear regression model along the spectrum of the bias-variance trade-off?
+
+The linear regression assumes a strictly linear relationship and is therefor a high bias model.
+The model does not change significantly when using other proportions of the dataset and therefor linear regression is a low variance model. 
+
+KNN is a low bias model because it has no prior assumptions to the data and can capture non-linear relationships.
+However, KNN is highly sensitive to noise and is therefor a high variance mocdel. 
+
+## 6. temporal Plot 
+```{r}
+
+
+```
+
+## 7. The role of K
+
+7.1 How would R^2 and AE change on the test and training set when k approaches 1 and k approaching N?
+
+The number of k indicates the number of nearest neighbors considered. If k is 1, the model depends only on its single nearest neighbor. If that said neighbor is an outlier, the prediction would be incorrect. Thus, the model closely follows the training data (low bias). However, the risk of overfitting increases (high variance).
+
+In contrast, when k -> N the prediction includes several data points, which in turn may make the model insensitive to patterns. Thus, the model may underfit. Therefor, this approach is high bias and low variance. 
+
+As a result, the optimal k depends on the data. For instance, if the data has few outliers a smaller k may be preferable because it allows more sensitivity. In contrast, if the data is noisy a higher number of k yields more robust results.
+
+### 7.3 hypothesis testing
+```{r}
+
+```
+
+### 7.4 "optimal"k
+```{r}
+
+```
+
+
