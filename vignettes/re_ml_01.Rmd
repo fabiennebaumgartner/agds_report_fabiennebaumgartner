@@ -2,10 +2,15 @@
 title: "re_ml_01"
 author: "FB"
 date: "2025-05-19"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
 ---
 
-```{r setup}
+```{r setup-libraries, message=FALSE, warning=FALSE}
+
 library(dplyr)
 library(ggplot2)
 library(readr)
@@ -15,6 +20,7 @@ library(recipes)
 library(rsample)
 library(dplyr)
 library(here)
+library(purrr)
 
 
 source(here("R", "utils.R"))
@@ -22,10 +28,10 @@ source(here("R", "utils.R"))
 
 # Chapter 10 supervised machine learning I
 
-## 1. Prepare and load data
-### 1. load data
+##  Prepare and load data
+###  load data
 ```{r}
-davos <- read_csv(here("data","FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")) |>
+daily_fluxes <- read_csv(here("data","FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")) |>
   
   # select only the variables we are interested in
   dplyr::select(TIMESTAMP,
@@ -58,8 +64,8 @@ davos <- read_csv(here("data","FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.c
   
 ```
 
-### 1.2 Data cleaning
-```{r}
+###  Data cleaning
+```{r, fig.cap= "Figure 1: data cleaning"}
 # Data cleaning: looks ok, no obviously bad data
 # no long tail, therefore no further target engineering
 daily_fluxes |> 
@@ -70,7 +76,7 @@ daily_fluxes |>
 ```
 
 
-## 3. split data
+### split data
 ```{r}
 # Data splitting
 set.seed(1982)  # for reproducibility
@@ -107,23 +113,23 @@ mod_knn <- caret::train(
 
 ```
 
-## 4. evaluate models
-### 4.1 KNN
-```{r}
+## evaluate models
+### KNN
+```{r - KNN model, fig.cap="Figure 2: KNN model"}
 # KNN
 eval_model(mod = mod_knn, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 
 
 ```
 
-### 4.2 Linear regression
-```{r}
+### Linear regression
+```{r - linear regression model, fig.cap="Figure 3: linear regression model"}
 # linear regression model
 eval_model(mod = mod_lm, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 
 
 ```
-## 5. Questionas & Answers
+## Questionas & Answers
 5.1 Why is the difference between the evaluation on the training and the test set larger for the KNN model than for the linear regression model?
 
 R^2 measures how much of the variation is explained by the model. 
@@ -138,12 +144,14 @@ The KNN model (low bias, high variance) shows a gap between the training and tes
 Ultimately, this outcome may be explained due to the nature of both models. KNN is a low bias, high variance model while linear regression is a high bias, low variance model. The results of both these models are a good example for the bias-variance tradeoff. 
 
 
+
 5.2 Why does the evaluation on the test set indicate a better model performance of the KNN model than the linear regression model?
 
 Linear Regression assumes a strictly linear relationship, while KNN allows non-linear patterns. The consistent R^2 value of the linear regression represents the proportion of variance which can be explained by a linear relationship. In contrast, the higher R^2 value shows there is additional variance that can be explained through non-linear modelling.
 Consequently, the higher R^2 value in the test data of the KNN model indicates a better model performance because it captures more variance. 
 
 Similarly, the lower RMSE value of the KNN model show a better predictive accuracy then the linear regression model.
+
 
 
 5.3 How would you position the KNN and the linear regression model along the spectrum of the bias-variance trade-off?
@@ -154,13 +162,54 @@ The model does not change significantly when using other proportions of the data
 KNN is a low bias model because it has no prior assumptions to the data and can capture non-linear relationships.
 However, KNN is highly sensitive to noise and is therefor a high variance mocdel. 
 
-## 6. temporal Plot 
-```{r}
+## temporal Plot 
+```{r - temporal plot, fig.cap="Figure 4: Temporal plot observed vs. modelled GPP"}
+
+# prep data: filter and remove rows 
+df_safe <- daily_fluxes_test[
+  daily_fluxes_test$SW_IN_F > 0 &
+  daily_fluxes_test$VPD_F > 0 &
+  daily_fluxes_test$TA_F > 0, 
+]
+df_safe <- na.omit(df_safe[, c("SW_IN_F", "VPD_F", "TA_F", "GPP_NT_VUT_REF", "TIMESTAMP")])
+
+# predict GPP using linear model and KNN model
+df_safe$pred_lm <- predict(mod_lm, newdata = df_safe)
+df_safe$pred_knn <- predict(mod_knn, newdata = df_safe)
+
+# combine observed and predicted values into one df
+observed_df <- data.frame(
+  TIMESTAMP = df_safe$TIMESTAMP,
+  GPP = df_safe$GPP_NT_VUT_REF,
+  type = "Observed"
+)
+
+lm_df <- data.frame(
+  TIMESTAMP = df_safe$TIMESTAMP,
+  GPP = df_safe$pred_lm,
+  type = "Linear Model"
+)
+
+knn_df <- data.frame(
+  TIMESTAMP = df_safe$TIMESTAMP,
+  GPP = df_safe$pred_knn,
+  type = "KNN"
+)
+
+# Bind rows together
+df_plot <- rbind(observed_df, lm_df, knn_df)
+
+
+
+ggplot(df_plot, aes(TIMESTAMP, GPP, color = type)) +
+  geom_line(alpha = 0.6) +
+  labs(title = "GPP: observed vs modelled", x = NULL, y = "GPP") +
+  theme_minimal()
 
 
 ```
 
-## 7. The role of K
+## The role of K
 
 7.1 How would R^2 and AE change on the test and training set when k approaches 1 and k approaching N?
 
@@ -170,14 +219,62 @@ In contrast, when k -> N the prediction includes several data points, which in t
 
 As a result, the optimal k depends on the data. For instance, if the data has few outliers a smaller k may be preferable because it allows more sensitivity. In contrast, if the data is noisy a higher number of k yields more robust results.
 
-### 7.3 hypothesis testing
-```{r}
+### hypothesis testing
+```{r - testing the role of K. creating a function, message=FALSE, warning=FALSE}
+
+get_mae <- function(k_value, train_data, test_data, recipe_object) {
+  # train model
+  model <- caret::train(
+    recipe_object,
+    data = train_data |> drop_na(),
+    method = "knn",
+    tuneGrid = data.frame(k = k_value),
+    trControl = caret::trainControl(method = "none")
+  )
+  
+  metrics <- eval_model(model, train_data, test_data, return_metrics = TRUE)
+  
+  if (is.null(metrics$test)) {
+    stop("Error: `metrics$test` is NULL. Check `eval_model()` and data.")
+  }
+  
+  mae_test <- metrics$test %>%
+    dplyr::filter(.metric == "mae") %>%
+    dplyr::pull(.estimate)
+  
+  # mae train
+  mae_train <- metrics$train %>%
+    dplyr::filter(.metric == "mae") %>%
+    dplyr::pull(.estimate)
+  
+  # data frame with mae
+  return(data.frame(k = k_value, mae_train = mae_train, mae_test = mae_test))
+}
+
+
 
 ```
 
-### 7.4 "optimal"k
-```{r}
+
+
+
+### "optimal"k
+```{r, message=FALSE, warning=FALSE}
+k_values <- 1:50
+
+mae_results <- map_dfr(k_values, ~ get_mae(k_value = .x, 
+                                          train_data = daily_fluxes_train, 
+                                          test_data = daily_fluxes_test, 
+                                          recipe_object = pp))
+
+library(ggplot2)
+ggplot(mae_results, aes(x = k, y = mae_test)) +
+  geom_line(color = "steelblue") +
+  geom_point(color = "red") +
+  labs(title = "Test MAE vs. K in KNN", x = "Number of Neighbors (k)", y = "Test MAE") +
+  theme_minimal()
+
 
 ```
 
-
+The optimal k is where MAE is the lowest. In this dataset there is a huge decrease around 5 and the lowest MAE appears around 15-20. Afterwards there is a slight increase in MAE.
